@@ -404,8 +404,7 @@ document.getElementById(id).classList.add('active');
 
 if (id !== 'packages') {
     bar.classList.remove('show');
-    sheet.classList.remove('open');
-    selected = null;
+    sheet.classList.remove('open');;
   }
 }
 
@@ -600,14 +599,20 @@ agree.addEventListener('change', () => {
     buyBtn.disabled = !agree.checked;
 });
 
-function paid(){
+function paid() {
   console.log("CLICKED PAID");
+  console.log("SELECTED:", selected);
+
+  if (!selected || typeof selected !== "object") {
+    alert("Ошибка: товар не выбран");
+    return;
+  }
 
   const data = {
-      gameId: document.getElementById('gameId').value,
-      username: document.getElementById('username').value,
-      product: selected.name,
-      price: selected.price
+    gameId: document.getElementById('gameId')?.value || "не указан",
+    username: document.getElementById('username')?.value || "не указан",
+    product: selected.name || "не указан",
+    price: selected.price || 0
   };
 
   console.log("SENDING TO BOT:", data);
@@ -618,6 +623,16 @@ function paid(){
   }
 
   Telegram.WebApp.sendData(JSON.stringify(data));
+
+  thanksSheet.classList.add('open');
+  thanksOverlay.classList.add('show');
+}
+
+function getSelected() {
+  if (!selected) {
+    throw new Error("No product selected");
+  }
+  return selected;
 }
 
 function closeThanks(){
