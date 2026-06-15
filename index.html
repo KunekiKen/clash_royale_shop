@@ -601,8 +601,8 @@ agree.addEventListener('change', () => {
 });
 
 function paid(){
-  sheet.classList.remove('open');
-  overlay.classList.remove('show');
+
+  console.log("PAID CLICKED");
 
   const data = {
       gameId: document.getElementById('gameId').value,
@@ -611,7 +611,12 @@ function paid(){
       price: selected.price
   };
 
+  console.log("SEND DATA:", data);
+
   Telegram.WebApp.sendData(JSON.stringify(data));
+
+  sheet.classList.remove('open');
+  overlay.classList.remove('show');
 
   thanksSheet.classList.add('open');
   thanksOverlay.classList.add('show');
