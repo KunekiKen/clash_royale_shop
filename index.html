@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -322,7 +322,66 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
   <button class="btn" style="width:100%;margin-top:20px" onclick="closeThanks()">
     OK
   </button>
-</div>
+</div> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Shop</title>
+<style>
+body{background:#05080E;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:20px}
+button{padding:20px 40px;font-size:24px;background:#00C3FF;border:none;border-radius:12px;color:#000;font-weight:bold;cursor:pointer;margin:20px}
+button:hover{opacity:0.8}
+</style>
+</head>
+<body>
+
+<h1>🧪 ТЕСТ ОТПРАВКИ v2</h1>
+<p>Нажми кнопку ниже:</p>
+<button onclick="test()">📤 НАЖМИ МЕНЯ</button>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+function test() {
+  alert("1. Кнопка нажата!");
+  
+  const data = {
+    gameId: "TEST123",
+    username: "@testuser",
+    product: "Тестовый товар",
+    price: 99.99
+  };
+  
+  // Способ 1: sendData
+  try {
+    Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("2. sendData отправлен");
+  } catch(e) {
+    alert("2. sendData ОШИБКА: " + e.message);
+  }
+  
+  // Способ 2: открыть ссылку с данными
+  setTimeout(() => {
+    const encoded = encodeURIComponent(JSON.stringify(data));
+    const url = "https://t.me/leaky_mortarShopBot?start=" + encoded;
+    alert("3. Открываю ссылку...");
+    Telegram.WebApp.openTelegramLink(url);
+    Telegram.WebApp.close();
+  }, 1000);
+}
+</script>
+</body>
+</html>
+
+
+
+
 
 <script>
 // const tg = window.Telegram.WebApp;
@@ -640,40 +699,7 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
 //   showPage('home');
 // }
 
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
 
-// Показываем кнопку для теста
-document.body.innerHTML = `
-  <div style="padding:20px;text-align:center">
-    <h2>ТЕСТ ОТПРАВКИ</h2>
-    <button onclick="test()" style="padding:20px;font-size:20px">
-      НАЖМИ МЕНЯ
-    </button>
-  </div>
-`;
-
-function test() {
-  alert("Кнопка нажата!");
-  
-  const data = {
-    gameId: "TEST123",
-    username: "@testuser",
-    product: "Тестовый товар",
-    price: 99.99
-  };
-  
-  alert("Отправляю: " + JSON.stringify(data));
-  
-  if (window.Telegram?.WebApp) {
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    alert("Данные отправлены! Закрываю...");
-    Telegram.WebApp.close();
-  } else {
-    alert("ОШИБКА: Нет Telegram.WebApp. Открыто не в Telegram!");
-  }
-}
 </script>
 </body>
 </html>
