@@ -496,26 +496,23 @@ function sendOrder() {
   const gameId = window.savedGameId || "не указан";
   const username = window.savedUsername || "не указан";
 
-  const data = {
-    gameId: gameId,
-    username: username,
-    product: selected.name || "не указан",
-    price: selected.price || 0
-  };
-
+  // Формируем текст заказа
+  const orderText = `НОВЫЙ ЗАКАЗ%0A%0AТовар: ${selected.name}%0AЦена: $${selected.price}%0AGame ID: ${gameId}%0AUsername: @${username}`;
+  
+  // Создаём ссылку на бота с готовым сообщением
+  const url = `https://t.me/leaky_mortarShopBot?text=${orderText}`;
+  
+  // Открываем чат с ботом
   if (window.Telegram?.WebApp) {
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    alert("Данные отправлены!");
-    
-    // Показываем thanks
-    thanksSheet.classList.add('open');
-    thanksOverlay.classList.add('show');
-    
-    // Скрываем кнопку подтверждения
-    document.getElementById('confirmBtn').style.display = 'none';
+    Telegram.WebApp.openTelegramLink(url);
   } else {
-    alert("Откройте магазин через Telegram!");
+    window.open(url, '_blank');
   }
+  
+  // Показываем thanks
+  thanksSheet.classList.add('open');
+  thanksOverlay.classList.add('show');
+  document.getElementById('confirmBtn').style.display = 'none';
 }
 
 function closeThanks(){
