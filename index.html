@@ -498,26 +498,55 @@ function sendOrder() {
   const gameId = window.savedGameId || "не указан";
   const username = window.savedUsername || "не указан";
 
-  // Формируем текст заказа
-  const orderText = `НОВЫЙ ЗАКАЗ%0A%0A🎮 Товар: ${selected.name}%0A💰 Цена: $${selected.price}%0A🆔 Game ID: ${gameId}%0A👤 Username: @${username}`;
-  
-  // Ссылка на бота с готовым сообщением
-  const url = `https://t.me/leaky_mortarShopBot?text=${orderText}`;
-  
-  // Открываем чат с ботом
+  const data = {
+    gameId: gameId,
+    username: username,
+    product: selected.name || "не указан",
+    price: selected.price || 0
+  };
+
+  // Способ 1: sendData
   if (window.Telegram?.WebApp) {
-    Telegram.WebApp.openTelegramLink(url);
-  } else {
-    window.open(url, '_blank');
+    try {
+      Telegram.WebApp.sendData(JSON.stringify(data));
+      alert("✅ Заказ отправлен через sendData!");
+      // Если sendData сработал — бот получит web_app_data
+      // Прячем кнопки и показываем успех
+      document.getElementById('confirmBtn').style.display = 'none';
+      document.getElementById('confirmHint').style.display = 'none';
+      document.getElementById('paidBtn').style.display = 'none';
+      // Можно показать краткое уведомление на странице, но thanks sheet пока не трогаем
+      showPage('home'); // вернём на главную, чтобы не висела оплата
+      return;
+    } catch(e) {
+      alert("sendData не сработал: " + e.message);
+    }
   }
-  
-  // Показываем thanks
-  thanksSheet.classList.add('open');
-  thanksOverlay.classList.add('show');
-  
-  // Прячем кнопку подтверждения и подсказку
+
+  // Способ 2: открыть чат с готовым текстом (запасной)
+  const orderText = `НОВЫЙ ЗАКАЗ%0A%0A🎮 Товар: ${selected.name}%0A💰 Цена: $${selected.price}%0A🆔 Game ID: ${gameId}%0A👤 Username: @${username}`;
+  const url = `https://t.me/leaky_mortarShopBot?text=${orderText}`;
+
+  if (window.Telegram?.WebApp) {
+    try {
+      Telegram.WebApp.openTelegramLink(url);
+      alert("Чат с ботом открыт. Нажмите «Отправить».");
+    } catch(e) {
+      alert("Не удалось открыть чат: " + e.message);
+      // Последняя попытка – обычное окно
+      window.open(url, '_blank');
+    }
+  } else {
+    alert("Откройте магазин через Telegram!");
+    return;
+  }
+
+  // Прячем кнопки подтверждения
   document.getElementById('confirmBtn').style.display = 'none';
   document.getElementById('confirmHint').style.display = 'none';
+  document.getElementById('paidBtn').style.display = 'none';
+  // Возвращаемся на главную, чтобы не путать пользователя
+  showPage('home');
 }
 function closeThanks(){
   thanksSheet.classList.remove('open');
