@@ -581,8 +581,10 @@ buyBtn.addEventListener('click', () => {
   }
 
   // Сохраняем значения перед переходом к оплате
-  window.savedGameId = document.getElementById('gameId').value;
-  window.savedUsername = document.getElementById('username').value;
+  window.savedGameId = document.getElementById('gameId').value.trim();
+  window.savedUsername = document.getElementById('username').value.trim();
+
+  console.log("СОХРАНЕНО:", window.savedGameId, window.savedUsername);
 
   goToPayment();
 });
@@ -599,8 +601,8 @@ function paid() {
     return;
   }
 
-  const gameId = window.savedGameId || document.getElementById('gameId')?.value || "не указан";
-  const username = window.savedUsername || document.getElementById('username')?.value || "не указан";
+  const gameId = window.savedGameId || "не указан";
+  const username = window.savedUsername || "не указан";
 
   const data = {
     gameId: gameId,
@@ -611,12 +613,14 @@ function paid() {
 
   console.log("SENDING TO BOT:", data);
 
-  if (!window.Telegram?.WebApp) {
+  // Пробуем закрыть WebApp
+  if (window.Telegram?.WebApp) {
+    Telegram.WebApp.sendData(JSON.stringify(data));
+    Telegram.WebApp.close();
+  } else {
     alert("ОТКРОЙ МЕНЯ В ТЕЛЕГРАМЕ");
     return;
   }
-
-  Telegram.WebApp.sendData(JSON.stringify(data));
 
   thanksSheet.classList.add('open');
   thanksOverlay.classList.add('show');
@@ -634,29 +638,6 @@ function closeThanks(){
   thanksOverlay.classList.remove('show');
 
   showPage('home');
-}
-
-function sendOrderToBot() {
-    const data = {
-        gameId: document.getElementById('gameId').value,
-        username: document.getElementById('username').value,
-        product: selected.name,
-        price: selected.price
-    };
-
-    Telegram.WebApp.sendData(JSON.stringify(data));
-}
-
-function sendOrderToBot() {
-    const data = {
-        gameId: document.getElementById('gameId').value,
-        username: document.getElementById('username').value,
-        product: selected.name,
-        price: selected.price
-    };
-
-    console.log("SENDING TO BOT:", data);
-    Telegram.WebApp.sendData(JSON.stringify(data));
 }
 </script>
 </body>
