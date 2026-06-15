@@ -601,8 +601,7 @@ agree.addEventListener('change', () => {
 });
 
 function paid(){
-
-  console.log("PAID CLICKED");
+  console.log("CLICKED PAID");
 
   const data = {
       gameId: document.getElementById('gameId').value,
@@ -611,15 +610,14 @@ function paid(){
       price: selected.price
   };
 
-  console.log("SEND DATA:", data);
+  console.log("SENDING TO BOT:", data);
+
+  if (!window.Telegram?.WebApp) {
+    alert("NOT IN TELEGRAM");
+    return;
+  }
 
   Telegram.WebApp.sendData(JSON.stringify(data));
-
-  sheet.classList.remove('open');
-  overlay.classList.remove('show');
-
-  thanksSheet.classList.add('open');
-  thanksOverlay.classList.add('show');
 }
 
 function closeThanks(){
