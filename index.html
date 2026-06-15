@@ -266,8 +266,9 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
     <p>Гривны:</p>
     <div class="mono">1234 5678 9012 3456</div>
 </div>
-<button class="btn" style="width:100%;margin-top:20px" onclick="paid()">✅ Я оплатил</button>
-<button class="btn" style="width:100%;margin-top:10px; display:none; background:#00ff88; color:#000" id="confirmBtn" onclick="sendOrder()">📤 Подтвердить заказ</button>
+<button class="btn" id="paidBtn" style="width:100%;margin-top:20px" onclick="paid()">✅ Я оплатил</button>
+<button class="btn" id="confirmBtn" style="width:100%;margin-top:10px; display:none; background:#00ff88; color:#000" onclick="sendOrder()">📤 Подтвердить заказ</button>
+<p id="confirmHint" style="display:none; color:#aaa; font-size:0.9em; margin-top:5px; text-align:center;">После нажатия откроется чат с ботом — нажмите «Отправить»</p>
 <button class="btn" style="width:100%;margin-top:10px;background:#444;color:white" onclick="showPage('home')">❌ Я передумал</button>
 </section>
 
@@ -486,48 +487,38 @@ function paid() {
     return;
   }
   
-  // Показываем кнопку подтверждения
-  document.getElementById('confirmBtn').style.display = 'block';
+  // Скрываем кнопку "Я оплатил"
+  document.getElementById('paidBtn').style.display = 'none';
   
-  // Меняем текст первой кнопки
-  alert("Нажмите 'Подтвердить заказ' для отправки");
+  // Показываем кнопку "Подтвердить заказ" и подсказку
+  document.getElementById('confirmBtn').style.display = 'block';
+  document.getElementById('confirmHint').style.display = 'block';
 }
 function sendOrder() {
   const gameId = window.savedGameId || "не указан";
   const username = window.savedUsername || "не указан";
 
-  const data = {
-    gameId: gameId,
-    username: username,
-    product: selected.name || "не указан",
-    price: selected.price || 0
-  };
-
-  // Способ 1: пробуем sendData
+  // Формируем текст заказа
+  const orderText = `НОВЫЙ ЗАКАЗ%0A%0A🎮 Товар: ${selected.name}%0A💰 Цена: $${selected.price}%0A🆔 Game ID: ${gameId}%0A👤 Username: @${username}`;
+  
+  // Ссылка на бота с готовым сообщением
+  const url = `https://t.me/leaky_mortarShopBot?text=${orderText}`;
+  
+  // Открываем чат с ботом
   if (window.Telegram?.WebApp) {
-    try {
-      Telegram.WebApp.sendData(JSON.stringify(data));
-      console.log("sendData отправлен");
-    } catch(e) {
-      console.log("sendData не сработал:", e);
-      
-      // Способ 2: запасной — открываем чат с текстом
-      const orderText = encodeURIComponent(
-        `НОВЫЙ ЗАКАЗ\n\nТовар: ${selected.name}\nЦена: $${selected.price}\nGame ID: ${gameId}\nUsername: @${username}`
-      );
-      Telegram.WebApp.openTelegramLink(`https://t.me/leaky_mortarShopBot?text=${orderText}`);
-    }
+    Telegram.WebApp.openTelegramLink(url);
   } else {
-    alert("Откройте магазин через Telegram!");
-    return;
+    window.open(url, '_blank');
   }
-
+  
   // Показываем thanks
   thanksSheet.classList.add('open');
   thanksOverlay.classList.add('show');
+  
+  // Прячем кнопку подтверждения и подсказку
   document.getElementById('confirmBtn').style.display = 'none';
+  document.getElementById('confirmHint').style.display = 'none';
 }
-
 function closeThanks(){
   thanksSheet.classList.remove('open');
   thanksOverlay.classList.remove('show');
