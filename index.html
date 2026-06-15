@@ -477,15 +477,6 @@ function openPackages(title){
   });
 }
 
-/*function selectPackage(i,el){
-document.querySelectorAll('#pkgList .card').forEach(c=>c.classList.remove('selected'));
-el.classList.add('selected');
-selected = categories[currentCategory][i];
-bar.classList.add('show');
-price.textContent='$'+selected.price.toFixed(2);
-summary.textContent=selected.name+' - $'+selected.price.toFixed(2);
-}*/
-
 overlay.addEventListener('click', () => {
   sheet.classList.remove('open');
   overlay.classList.remove('show');
@@ -584,15 +575,16 @@ const agree = document.getElementById('agree');
 const buyBtn = document.getElementById('buyBtn');
 
 buyBtn.addEventListener('click', () => {
+  if (!selected) {
+    alert("Ты не выбрал товар");
+    return;
+  }
 
-    
+  // Сохраняем значения перед переходом к оплате
+  window.savedGameId = document.getElementById('gameId').value;
+  window.savedUsername = document.getElementById('username').value;
 
-    if (!selected) {
-        alert("Ты не выбрал товар");
-        return;
-    }
-
-    goToPayment();
+  goToPayment();
 });
 
 agree.addEventListener('change', () => {
@@ -601,16 +593,18 @@ agree.addEventListener('change', () => {
 
 function paid() {
   console.log("CLICKED PAID");
-  console.log("SELECTED:", selected);
 
   if (!selected || typeof selected !== "object") {
     alert("Ошибка: товар не выбран");
     return;
   }
 
+  const gameId = window.savedGameId || document.getElementById('gameId')?.value || "не указан";
+  const username = window.savedUsername || document.getElementById('username')?.value || "не указан";
+
   const data = {
-    gameId: document.getElementById('gameId')?.value || "не указан",
-    username: document.getElementById('username')?.value || "не указан",
+    gameId: gameId,
+    username: username,
     product: selected.name || "не указан",
     price: selected.price || 0
   };
@@ -618,7 +612,7 @@ function paid() {
   console.log("SENDING TO BOT:", data);
 
   if (!window.Telegram?.WebApp) {
-    alert("NOT IN TELEGRAM");
+    alert("ОТКРОЙ МЕНЯ В ТЕЛЕГРАМЕ");
     return;
   }
 
