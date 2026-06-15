@@ -645,6 +645,18 @@ function sendOrderToBot() {
 
     Telegram.WebApp.sendData(JSON.stringify(data));
 }
+
+function sendOrderToBot() {
+    const data = {
+        gameId: document.getElementById('gameId').value,
+        username: document.getElementById('username').value,
+        product: selected.name,
+        price: selected.price
+    };
+
+    console.log("SENDING TO BOT:", data);
+    Telegram.WebApp.sendData(JSON.stringify(data));
+}
 </script>
 </body>
 </html>
