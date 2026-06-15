@@ -279,7 +279,9 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
 <div class="sheet" id="thanksSheet">
   <h2>Спасибо за покупку!</h2>
   <p style="margin-top:10px; color:#b8c7d9;">Администратор проверит оплату и напишет вам в течение часа!</p>
-  <button class="btn" style="width:100%;margin-top:20px" onclick="closeThanks()">OK</button>
+  <button class="btn" style="width:100%;margin-top:20px; background:#00C3FF;" id="returnToBotBtn">
+    Вернуться в бота
+  </button>
 </div>
 
 <script>
@@ -500,20 +502,25 @@ function paid() {
   const encoded = encodeURIComponent(jsonStr);
   const url = "https://t.me/leaky_mortarShopBot?start=" + encoded;
 
-  // Показываем thanks sheet
+  // Сохраняем URL глобально, чтобы кнопка могла его использовать
+  window.paymentUrl = url;
+
+  // Показываем thanks sheet с кнопкой
   thanksSheet.classList.add('open');
   thanksOverlay.classList.add('show');
 
-  // Небольшая задержка, чтобы пользователь увидел сообщение, затем открываем бота
-  setTimeout(() => {
+  // Вешаем обработчик на кнопку "Вернуться в бота"
+  document.getElementById('returnToBotBtn').onclick = function() {
     if (window.Telegram?.WebApp) {
-      Telegram.WebApp.openTelegramLink(url);
-      Telegram.WebApp.close();
+      Telegram.WebApp.openTelegramLink(window.paymentUrl);
+      // Даём время на открытие ссылки и закрываем WebApp
+      setTimeout(() => {
+        Telegram.WebApp.close();
+      }, 500);
     } else {
-      // fallback, если не в Telegram
-      window.open(url, '_blank');
+      window.open(window.paymentUrl, '_blank');
     }
-  }, 1500);
+  };
 }
 
 function closeThanks(){
