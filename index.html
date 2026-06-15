@@ -325,319 +325,354 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
 </div>
 
 <script>
+// const tg = window.Telegram.WebApp;
+// tg.ready();
+// tg.expand();
+
+// document.addEventListener('DOMContentLoaded', () => {
+
+//   const gameIdInput = document.getElementById('gameId');
+//   const usernameInput = document.getElementById('username');
+//   const agree = document.getElementById('agree');
+//   const buyBtn = document.getElementById('buyBtn');
+
+//   function checkForm() {
+//     buyBtn.disabled = !(
+//       gameIdInput.value.trim() &&
+//       usernameInput.value.trim() &&
+//       agree.checked
+//     );
+//   }
+
+//   gameIdInput.addEventListener('input', checkForm);
+//   usernameInput.addEventListener('input', checkForm);
+//   agree.addEventListener('change', checkForm);
+
+// });
+
+// const categories = {
+//   "Royale Pass": [
+//     { name: "Royale Pass", price: 15, hot: true }
+//   ],
+
+//   "Баланс Аккаунта": [
+//     { name: "100 000 Золота", price: 2.49 },
+//     { name: "250 000 Золота", price: 5.99 },
+//     { name: "80 Гемов", price: 1.19 },
+//     { name: "500 Гемов", price: 5.99 },
+//     { name: "1200 Гемов", price: 11.99 },
+//     { name: "2500 Гемов", price: 23.99 },
+//     { name: "6500 Гемов", price: 59.99 },
+//     { name: "14000 Гемов", price: 119.99 },
+//   ],
+//   "Фестиваль Карт-Джокеров": [
+//     { name: "x1500 Обычных", price: 2.50 },
+//     { name: "х300 Редких + х1500 Обычных", price: 5 },
+//     { name: "х40 Эпических + х300 Редких + х1500 Обычных", price: 7.50 },
+//     { name: "Вся цепочка", price: 10.00 },
+//   ],
+//   "Легендарный Путь": [
+//     { name: "x3 Джокера", price: 2.50 },
+//     { name: "х3 + х4 Джокеров", price: 5 },
+//     { name: "х3 + х4 + х6 Джокеров", price: 7.50 },
+//     { name: "Вся цепочка", price: 10.00 },
+//   ],
+//   "Рынок Эволюций": [
+//     { name: "x3 Осколка эволюции на выбор", price: 7.00 },
+//     { name: "x6 Осколков эволюции на выбор", price: 14.00 },
+//   ],
+//   "Рынок Героев": [
+//     { name: "Герой на ваш выбор", price: 15.00 },
+//   ],
+//   "Рынок Легендарных Карт": [
+//     { name: "х8 Легендарных карт на ваш выбор <br> (Максимум 5 покупок одного типа)", price: 10.00 },
+//   ],
+//   "Рынок Карт Чемпионов": [
+//     { name: "х5 Чемпионских карт на ваш выбор <br> (Максимум 6 покупок одного типа)", price: 12.00 },
+//   ],
+//   "Рынок Эмодзи": [
+//     { name: "Любой эмодзи на ваш выбор", price: 6.00 },
+//   ],
+// };
+
+// let currentCategory = null;
+// let selected = null;
+
+// function showPage(id){
+// document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+// document.getElementById(id).classList.add('active');
+
+// if (id !== 'packages') {
+//     bar.classList.remove('show');
+//     sheet.classList.remove('open');;
+//   }
+// }
+
+// function selectPackage(i, el){
+//   const item = categories[currentCategory][i];
+
+//   console.log("ВЫБРАЛИ:", item);
+
+//   // если клик по уже выбранному товару → снять выбор
+//   if (selected === item) {
+//     clearSelection();
+//     return;
+//   }
+
+//   // снять выделение со всех карточек
+//   document.querySelectorAll('#pkgList .card')
+//     .forEach(c => c.classList.remove('selected'));
+
+//   // выделить текущую
+//   el.classList.add('selected');
+//   selected = item;
+
+//   // показать панель
+//   bar.classList.add('show');
+
+//   // обновить данные
+//   price.textContent = '$' + item.price.toFixed(2);
+//   summary.textContent = item.name + ' - $' + item.price.toFixed(2);
+// }
+
+// function clearSelection(){
+//   selected = null;
+
+//   document.querySelectorAll('#pkgList .card')
+//     .forEach(c => c.classList.remove('selected'));
+
+//   bar.classList.remove('show');
+// }
+
+// document.addEventListener('click', (e) => {
+//   const isCard = e.target.closest('#pkgList .card');
+//   const isBar = e.target.closest('#bar');
+//   const isSheet = e.target.closest('#sheet');
+
+//   // закрываем только UI
+//   if (!isCard && !isBar && !isSheet) {
+//     bar.classList.remove('show');
+//     sheet.classList.remove('open');
+//     overlay.classList.remove('show');
+//   }
+// });
+
+// function openGame(){showPage('game')}
+// function openPackages(title){
+//   currentCategory = title;
+
+//   showPage('packages');
+//   pkgTitle.textContent = title;
+//   pkgList.innerHTML = '';
+
+//   categories[title].forEach((p, i) => {
+//     let el = document.createElement('div');
+//     el.className = 'card';
+//     el.innerHTML = `
+//       <h3>${p.name} ${p.hot ? '<span class="badge">HOT</span>' : ''}</h3>
+//       <div class="mono">$${p.price.toFixed(2)}</div>
+//     `;
+//     el.onclick = () => selectPackage(i, el);
+//     pkgList.appendChild(el);
+//   });
+// }
+
+// overlay.addEventListener('click', () => {
+//   sheet.classList.remove('open');
+//   overlay.classList.remove('show');
+
+//   if(selected){
+//     bar.classList.add('show');
+//   }
+// });
+
+// function goToPayment(){
+//     if (!selected) {
+//         alert("Сначала выбери товар");
+//         return;
+//     }
+
+//     document.getElementById('paymentProduct').innerHTML = selected.name;
+//     document.getElementById('paymentPrice').textContent =
+//         '$' + selected.price.toFixed(2);
+
+//     sheet.classList.remove('open');
+//     overlay.classList.remove('show');
+
+//     showPage('payment');
+// }
+
+// function openCheckout() {
+//   bar.classList.remove('show');
+
+//   setTimeout(() => {
+//     sheet.classList.add('open');
+//     overlay.classList.add('show');
+//   }, 300);
+// }
+
+// const handle = document.querySelector('.sheetHandle');
+
+// let startY = 0;
+// let currentY = 0;
+
+// handle.addEventListener('touchstart', e => {
+//   startY = e.touches[0].clientY;
+// });
+
+// handle.addEventListener('touchmove', e => {
+//   currentY = e.touches[0].clientY;
+//   const diff = currentY - startY;
+
+//   if (diff > 0) {
+//     sheet.style.transform = `translate(-50%, ${diff}px)`;
+//   }
+// });
+
+// handle.addEventListener('touchend', () => {
+//   const diff = currentY - startY;
+
+//   if (diff > 100) {
+//     // закрыть
+//     sheet.classList.remove('open');
+//     overlay.classList.remove('show');
+
+//     if (selected) {
+//       bar.classList.add('show');
+//     }
+//   } else {
+//     // вернуть на место
+//     sheet.style.transform = 'translate(-50%, 0)';
+//   }
+// });
+
+// handle.addEventListener('touchstart', e => {
+//     startY = e.touches[0].clientY;
+//     sheet.style.transition = 'none';
+// });
+
+// handle.addEventListener('touchmove', e => {
+//     const diff = Math.max(0, e.touches[0].clientY - startY);
+
+//     sheet.style.transform =
+//         `translate(-50%, ${diff}px)`;
+// });
+
+// handle.addEventListener('touchend', e => {
+//     sheet.style.transition = 'transform .25s ease';
+
+//     const diff = currentY - startY;
+
+//     if(diff > 120){
+//         closeSheet();
+//     }else{
+//         sheet.style.transform =
+//             'translate(-50%, 0)';
+//     }
+// });
+
+// const agree = document.getElementById('agree');
+// const buyBtn = document.getElementById('buyBtn');
+
+// buyBtn.addEventListener('click', () => {
+//   if (!selected) {
+//     alert("Ты не выбрал товар");
+//     return;
+//   }
+
+//   // Сохраняем значения перед переходом к оплате
+//   window.savedGameId = document.getElementById('gameId').value.trim();
+//   window.savedUsername = document.getElementById('username').value.trim();
+
+//   console.log("СОХРАНЕНО:", window.savedGameId, window.savedUsername);
+
+//   goToPayment();
+// });
+
+// agree.addEventListener('change', () => {
+//     buyBtn.disabled = !agree.checked;
+// });
+
+// function paid() {
+//   console.log("CLICKED PAID");
+
+//   if (!selected || typeof selected !== "object") {
+//     alert("Ошибка: товар не выбран");
+//     return;
+//   }
+
+//   const gameId = window.savedGameId || "не указан";
+//   const username = window.savedUsername || "не указан";
+
+//   const data = {
+//     gameId: gameId,
+//     username: username,
+//     product: selected.name || "не указан",
+//     price: selected.price || 0
+//   };
+
+//   console.log("SENDING TO BOT:", data);
+
+//   // Пробуем закрыть WebApp
+//   if (window.Telegram?.WebApp) {
+//     Telegram.WebApp.sendData(JSON.stringify(data));
+//     Telegram.WebApp.close();
+//   } else {
+//     alert("ОТКРОЙ МЕНЯ В ТЕЛЕГРАМЕ");
+//     return;
+//   }
+
+//   thanksSheet.classList.add('open');
+//   thanksOverlay.classList.add('show');
+// }
+
+// function getSelected() {
+//   if (!selected) {
+//     throw new Error("No product selected");
+//   }
+//   return selected;
+// }
+
+// function closeThanks(){
+//   thanksSheet.classList.remove('open');
+//   thanksOverlay.classList.remove('show');
+
+//   showPage('home');
+// }
+
 const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
-document.addEventListener('DOMContentLoaded', () => {
+// Показываем кнопку для теста
+document.body.innerHTML = `
+  <div style="padding:20px;text-align:center">
+    <h2>ТЕСТ ОТПРАВКИ</h2>
+    <button onclick="test()" style="padding:20px;font-size:20px">
+      НАЖМИ МЕНЯ
+    </button>
+  </div>
+`;
 
-  const gameIdInput = document.getElementById('gameId');
-  const usernameInput = document.getElementById('username');
-  const agree = document.getElementById('agree');
-  const buyBtn = document.getElementById('buyBtn');
-
-  function checkForm() {
-    buyBtn.disabled = !(
-      gameIdInput.value.trim() &&
-      usernameInput.value.trim() &&
-      agree.checked
-    );
-  }
-
-  gameIdInput.addEventListener('input', checkForm);
-  usernameInput.addEventListener('input', checkForm);
-  agree.addEventListener('change', checkForm);
-
-});
-
-const categories = {
-  "Royale Pass": [
-    { name: "Royale Pass", price: 15, hot: true }
-  ],
-
-  "Баланс Аккаунта": [
-    { name: "100 000 Золота", price: 2.49 },
-    { name: "250 000 Золота", price: 5.99 },
-    { name: "80 Гемов", price: 1.19 },
-    { name: "500 Гемов", price: 5.99 },
-    { name: "1200 Гемов", price: 11.99 },
-    { name: "2500 Гемов", price: 23.99 },
-    { name: "6500 Гемов", price: 59.99 },
-    { name: "14000 Гемов", price: 119.99 },
-  ],
-  "Фестиваль Карт-Джокеров": [
-    { name: "x1500 Обычных", price: 2.50 },
-    { name: "х300 Редких + х1500 Обычных", price: 5 },
-    { name: "х40 Эпических + х300 Редких + х1500 Обычных", price: 7.50 },
-    { name: "Вся цепочка", price: 10.00 },
-  ],
-  "Легендарный Путь": [
-    { name: "x3 Джокера", price: 2.50 },
-    { name: "х3 + х4 Джокеров", price: 5 },
-    { name: "х3 + х4 + х6 Джокеров", price: 7.50 },
-    { name: "Вся цепочка", price: 10.00 },
-  ],
-  "Рынок Эволюций": [
-    { name: "x3 Осколка эволюции на выбор", price: 7.00 },
-    { name: "x6 Осколков эволюции на выбор", price: 14.00 },
-  ],
-  "Рынок Героев": [
-    { name: "Герой на ваш выбор", price: 15.00 },
-  ],
-  "Рынок Легендарных Карт": [
-    { name: "х8 Легендарных карт на ваш выбор <br> (Максимум 5 покупок одного типа)", price: 10.00 },
-  ],
-  "Рынок Карт Чемпионов": [
-    { name: "х5 Чемпионских карт на ваш выбор <br> (Максимум 6 покупок одного типа)", price: 12.00 },
-  ],
-  "Рынок Эмодзи": [
-    { name: "Любой эмодзи на ваш выбор", price: 6.00 },
-  ],
-};
-
-let currentCategory = null;
-let selected = null;
-
-function showPage(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-
-if (id !== 'packages') {
-    bar.classList.remove('show');
-    sheet.classList.remove('open');;
-  }
-}
-
-function selectPackage(i, el){
-  const item = categories[currentCategory][i];
-
-  console.log("ВЫБРАЛИ:", item);
-
-  // если клик по уже выбранному товару → снять выбор
-  if (selected === item) {
-    clearSelection();
-    return;
-  }
-
-  // снять выделение со всех карточек
-  document.querySelectorAll('#pkgList .card')
-    .forEach(c => c.classList.remove('selected'));
-
-  // выделить текущую
-  el.classList.add('selected');
-  selected = item;
-
-  // показать панель
-  bar.classList.add('show');
-
-  // обновить данные
-  price.textContent = '$' + item.price.toFixed(2);
-  summary.textContent = item.name + ' - $' + item.price.toFixed(2);
-}
-
-function clearSelection(){
-  selected = null;
-
-  document.querySelectorAll('#pkgList .card')
-    .forEach(c => c.classList.remove('selected'));
-
-  bar.classList.remove('show');
-}
-
-document.addEventListener('click', (e) => {
-  const isCard = e.target.closest('#pkgList .card');
-  const isBar = e.target.closest('#bar');
-  const isSheet = e.target.closest('#sheet');
-
-  // закрываем только UI
-  if (!isCard && !isBar && !isSheet) {
-    bar.classList.remove('show');
-    sheet.classList.remove('open');
-    overlay.classList.remove('show');
-  }
-});
-
-function openGame(){showPage('game')}
-function openPackages(title){
-  currentCategory = title;
-
-  showPage('packages');
-  pkgTitle.textContent = title;
-  pkgList.innerHTML = '';
-
-  categories[title].forEach((p, i) => {
-    let el = document.createElement('div');
-    el.className = 'card';
-    el.innerHTML = `
-      <h3>${p.name} ${p.hot ? '<span class="badge">HOT</span>' : ''}</h3>
-      <div class="mono">$${p.price.toFixed(2)}</div>
-    `;
-    el.onclick = () => selectPackage(i, el);
-    pkgList.appendChild(el);
-  });
-}
-
-overlay.addEventListener('click', () => {
-  sheet.classList.remove('open');
-  overlay.classList.remove('show');
-
-  if(selected){
-    bar.classList.add('show');
-  }
-});
-
-function goToPayment(){
-    if (!selected) {
-        alert("Сначала выбери товар");
-        return;
-    }
-
-    document.getElementById('paymentProduct').innerHTML = selected.name;
-    document.getElementById('paymentPrice').textContent =
-        '$' + selected.price.toFixed(2);
-
-    sheet.classList.remove('open');
-    overlay.classList.remove('show');
-
-    showPage('payment');
-}
-
-function openCheckout() {
-  bar.classList.remove('show');
-
-  setTimeout(() => {
-    sheet.classList.add('open');
-    overlay.classList.add('show');
-  }, 300);
-}
-
-const handle = document.querySelector('.sheetHandle');
-
-let startY = 0;
-let currentY = 0;
-
-handle.addEventListener('touchstart', e => {
-  startY = e.touches[0].clientY;
-});
-
-handle.addEventListener('touchmove', e => {
-  currentY = e.touches[0].clientY;
-  const diff = currentY - startY;
-
-  if (diff > 0) {
-    sheet.style.transform = `translate(-50%, ${diff}px)`;
-  }
-});
-
-handle.addEventListener('touchend', () => {
-  const diff = currentY - startY;
-
-  if (diff > 100) {
-    // закрыть
-    sheet.classList.remove('open');
-    overlay.classList.remove('show');
-
-    if (selected) {
-      bar.classList.add('show');
-    }
-  } else {
-    // вернуть на место
-    sheet.style.transform = 'translate(-50%, 0)';
-  }
-});
-
-handle.addEventListener('touchstart', e => {
-    startY = e.touches[0].clientY;
-    sheet.style.transition = 'none';
-});
-
-handle.addEventListener('touchmove', e => {
-    const diff = Math.max(0, e.touches[0].clientY - startY);
-
-    sheet.style.transform =
-        `translate(-50%, ${diff}px)`;
-});
-
-handle.addEventListener('touchend', e => {
-    sheet.style.transition = 'transform .25s ease';
-
-    const diff = currentY - startY;
-
-    if(diff > 120){
-        closeSheet();
-    }else{
-        sheet.style.transform =
-            'translate(-50%, 0)';
-    }
-});
-
-const agree = document.getElementById('agree');
-const buyBtn = document.getElementById('buyBtn');
-
-buyBtn.addEventListener('click', () => {
-  if (!selected) {
-    alert("Ты не выбрал товар");
-    return;
-  }
-
-  // Сохраняем значения перед переходом к оплате
-  window.savedGameId = document.getElementById('gameId').value.trim();
-  window.savedUsername = document.getElementById('username').value.trim();
-
-  console.log("СОХРАНЕНО:", window.savedGameId, window.savedUsername);
-
-  goToPayment();
-});
-
-agree.addEventListener('change', () => {
-    buyBtn.disabled = !agree.checked;
-});
-
-function paid() {
-  console.log("CLICKED PAID");
-
-  if (!selected || typeof selected !== "object") {
-    alert("Ошибка: товар не выбран");
-    return;
-  }
-
-  const gameId = window.savedGameId || "не указан";
-  const username = window.savedUsername || "не указан";
-
+function test() {
+  alert("Кнопка нажата!");
+  
   const data = {
-    gameId: gameId,
-    username: username,
-    product: selected.name || "не указан",
-    price: selected.price || 0
+    gameId: "TEST123",
+    username: "@testuser",
+    product: "Тестовый товар",
+    price: 99.99
   };
-
-  console.log("SENDING TO BOT:", data);
-
-  // Пробуем закрыть WebApp
+  
+  alert("Отправляю: " + JSON.stringify(data));
+  
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("Данные отправлены! Закрываю...");
     Telegram.WebApp.close();
   } else {
-    alert("ОТКРОЙ МЕНЯ В ТЕЛЕГРАМЕ");
-    return;
+    alert("ОШИБКА: Нет Telegram.WebApp. Открыто не в Telegram!");
   }
-
-  thanksSheet.classList.add('open');
-  thanksOverlay.classList.add('show');
-}
-
-function getSelected() {
-  if (!selected) {
-    throw new Error("No product selected");
-  }
-  return selected;
-}
-
-function closeThanks(){
-  thanksSheet.classList.remove('open');
-  thanksOverlay.classList.remove('show');
-
-  showPage('home');
 }
 </script>
 </body>
