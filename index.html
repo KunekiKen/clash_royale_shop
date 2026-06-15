@@ -325,6 +325,9 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
 </div>
 
 <script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -591,7 +594,6 @@ buyBtn.addEventListener('click', () => {
     }
 
     goToPayment();
-    sendOrderToBot();
 });
 
 agree.addEventListener('change', () => {
@@ -599,11 +601,20 @@ agree.addEventListener('change', () => {
 });
 
 function paid(){
+  sheet.classList.remove('open');
+  overlay.classList.remove('show');
 
-    alert(
-        "Здесь позже будет отправка заказа в Telegram"
-    );
+  const data = {
+      gameId: document.getElementById('gameId').value,
+      username: document.getElementById('username').value,
+      product: selected.name,
+      price: selected.price
+  };
 
+  Telegram.WebApp.sendData(JSON.stringify(data));
+
+  thanksSheet.classList.add('open');
+  thanksOverlay.classList.add('show');
 }
 
 const thanksSheet = document.getElementById('thanksSheet');
