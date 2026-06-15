@@ -267,6 +267,7 @@ input{width:100%;margin:8px 0;padding:12px;background:#05080E;border:1px solid #
     <div class="mono">1234 5678 9012 3456</div>
 </div>
 <button class="btn" style="width:100%;margin-top:20px" onclick="paid()">✅ Я оплатил</button>
+<button class="btn" style="width:100%;margin-top:10px; display:none; background:#00ff88; color:#000" id="confirmBtn" onclick="sendOrder()">📤 Подтвердить заказ</button>
 <button class="btn" style="width:100%;margin-top:10px;background:#444;color:white" onclick="showPage('home')">❌ Я передумал</button>
 </section>
 
@@ -484,9 +485,16 @@ function paid() {
     alert("Ошибка: товар не выбран");
     return;
   }
-
-  const gameId = window.savedGameId || document.getElementById('gameId')?.value || "не указан";
-  const username = window.savedUsername || document.getElementById('username')?.value || "не указан";
+  
+  // Показываем кнопку подтверждения
+  document.getElementById('confirmBtn').style.display = 'block';
+  
+  // Меняем текст первой кнопки
+  alert("Нажмите 'Подтвердить заказ' для отправки");
+}
+function sendOrder() {
+  const gameId = window.savedGameId || "не указан";
+  const username = window.savedUsername || "не указан";
 
   const data = {
     gameId: gameId,
@@ -495,12 +503,16 @@ function paid() {
     price: selected.price || 0
   };
 
-  // Отправляем данные в бота (WebApp остаётся открытым)
   if (window.Telegram?.WebApp) {
     Telegram.WebApp.sendData(JSON.stringify(data));
-    // Показываем благодарность (без закрытия)
+    alert("Данные отправлены!");
+    
+    // Показываем thanks
     thanksSheet.classList.add('open');
     thanksOverlay.classList.add('show');
+    
+    // Скрываем кнопку подтверждения
+    document.getElementById('confirmBtn').style.display = 'none';
   } else {
     alert("Откройте магазин через Telegram!");
   }
